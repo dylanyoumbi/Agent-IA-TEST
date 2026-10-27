@@ -1,93 +1,180 @@
-# akademia-formation-ia
+# Akademia Formation IA — Guide des participants
 
+Bienvenue dans le laboratoire pédagogique Akademia Formation IA.
 
+Ce laboratoire permet de découvrir les modèles de langage (LLM), les
+agents IA, l'orchestration de workflows avec n8n et les architectures
+RAG (Retrieval-Augmented Generation).
 
-## Getting started
+## 1. Objectifs du TP
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+À la fin des activités, vous devez être capables de :
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- Identifier les composants d'une architecture IA.
+- Comprendre le rôle d'Ollama et d'un modèle de langage.
+- Découvrir la création visuelle d'un agent IA avec n8n.
+- Comprendre les rôles de MinIO et de Qdrant.
+- Explorer les fichiers de configuration du projet.
+- Observer le fonctionnement des services du laboratoire.
 
-## Add your files
+## 2. Environnement de travail
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+Le laboratoire est hébergé sur un serveur partagé administré par le formateur.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/santoudllo/akademia-formation-ia.git
-git branch -M main
-git push -uf origin main
-```
+Vous n'avez pas besoin d'installer Docker, Ollama, n8n ou Qdrant sur votre
+ordinateur pour suivre le parcours participant.
 
-## Integrate with your tools
+Les services sont préparés et démarrés par le formateur.
 
-* [Set up project integrations](https://gitlab.com/santoudllo/akademia-formation-ia/-/settings/integrations)
+## 3. Connexion au serveur
 
-## Collaborate with your team
+Depuis un terminal compatible SSH, connectez-vous avec les identifiants
+communiqués individuellement par le formateur.
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+Exemple :
 
-## Test and Deploy
+    ssh participant1@81.17.98.238
 
-Use the built-in continuous integration in GitLab.
+Chaque participant doit utiliser son propre compte.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+Une fois connecté, accédez au répertoire du projet :
 
-***
+    cd /opt/ia-lab
 
-# Editing this README
+Vérifiez le répertoire courant :
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+    pwd
 
-## Suggestions for a good README
+## 4. Explorer la documentation et les fichiers
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Afficher ce guide :
 
-## Name
-Choose a self-explaining name for your project.
+    cat README.md
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Consulter le fichier de configuration Docker Compose :
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+    cat docker-compose.yml
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Pour lire le fichier plus facilement :
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+    less README.md
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Dans less, appuyez sur q pour quitter.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Vous pouvez également explorer les répertoires auxquels votre compte
+est autorisé à accéder :
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+    ls -l
+    ls -l data
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Certains fichiers ou répertoires peuvent être volontairement inaccessibles.
+Ne tentez pas de contourner les permissions.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## 5. Découvrir les composants
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Ollama et le modèle de langage
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Ollama exécute les modèles de langage utilisés par le laboratoire.
+Le modèle conversationnel préparé pour les exercices est Qwen 2.5 3B.
 
-## License
-For open source projects, say how it is licensed.
+### n8n
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+n8n permet de construire visuellement des workflows et des agents IA
+en reliant des nœuds, sans avoir à développer toute l'application.
+
+### MinIO
+
+MinIO fournit un stockage objet pour les fichiers et les documents.
+
+### Qdrant
+
+Qdrant est une base de données vectorielle utilisée notamment pour
+la recherche sémantique et les architectures RAG.
+
+### PostgreSQL
+
+PostgreSQL assure le stockage de données relationnelles du projet.
+
+### API et interface web
+
+L'API permet aux composants applicatifs de communiquer.
+L'interface web fournit un point d'entrée pour utiliser l'application.
+
+## 6. Activités proposées
+
+### Activité 1 — Lire l'architecture
+
+1. Lire la section architecture de ce guide.
+2. Examiner docker-compose.yml.
+3. Identifier les services, leurs images, leurs ports et leurs volumes.
+4. Expliquer le rôle de chaque service.
+
+### Activité 2 — Observer le laboratoire
+
+1. Ouvrir les interfaces web communiquées par le formateur.
+2. Identifier les services accessibles.
+3. Observer les interfaces et relever les informations importantes.
+4. Signaler tout service inaccessible au formateur.
+
+### Activité 3 — Construire un agent IA avec n8n
+
+1. Ouvrir l'interface n8n.
+2. Créer un workflow de test selon les consignes du formateur.
+3. Ajouter le déclencheur de conversation.
+4. Ajouter un nœud AI Agent.
+5. Connecter le modèle Ollama préparé pour le TP.
+6. Tester l'agent avec une question simple.
+7. Observer la réponse et le déroulement du workflow.
+
+### Activité 4 — Comprendre le stockage et le RAG
+
+1. Découvrir l'interface MinIO.
+2. Identifier le rôle des documents dans le laboratoire.
+3. Découvrir l'interface Qdrant.
+4. Expliquer pourquoi une application RAG utilise des embeddings
+   et une base de données vectorielle.
+
+## 7. Règles d'utilisation du serveur partagé
+
+- Ne modifiez pas les fichiers du projet.
+- Ne supprimez pas de conteneurs, de volumes ou de données.
+- Ne lancez pas de commandes Docker qui modifient l'environnement.
+- Ne consultez, ne copiez et ne partagez aucun fichier contenant des secrets.
+- N'essayez pas d'accéder aux comptes des autres participants.
+- Signalez les erreurs au formateur.
+
+Les comptes participants sont prévus pour la consultation et les activités
+pédagogiques. Les opérations d'administration sont réservées au formateur.
+
+## 8. Accès aux interfaces web
+
+Les adresses et identifiants des interfaces sont communiqués par le formateur.
+
+Ne supposez pas qu'un service est accessible publiquement simplement parce
+qu'il fonctionne sur le serveur.
+
+Si une interface ne répond pas, notez le message affiché et transmettez-le
+au formateur. Ne modifiez pas la configuration réseau.
+
+## 9. Reproduire le laboratoire sur sa propre machine
+
+Si vous disposez de votre propre serveur ou machine et souhaitez installer
+et reproduire l'ensemble du laboratoire, consultez le guide séparé :
+
+    README_REPRODUCTION.md
+
+Ce second guide décrit le parcours d'installation et de configuration autonome.
+
+## 10. Questions de synthèse
+
+À la fin du TP, vous devez pouvoir expliquer :
+
+1. Quelle est la différence entre un LLM et un agent IA ?
+2. Quel est le rôle d'Ollama ?
+3. À quoi sert n8n ?
+4. Pourquoi utiliser MinIO pour stocker des documents ?
+5. Quel est le rôle de Qdrant dans une architecture RAG ?
+6. Pourquoi séparer l'API, l'interface web et les bases de données ?
+7. Pourquoi faut-il protéger les fichiers de configuration contenant des secrets ?
+
+Bon TP !
