@@ -1,0 +1,36 @@
+# Secrets locaux
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Frontend
+node_modules/
+dist/
+
+# Données et sauvegardes
+data/
+*.sqlite
+*.db
+*.bak
+*.backup
+*.old
+*.log
+
+# IDE et système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archive source et sauvegardes supplémentaires
+*.zip
+backend.backup*/
+*.bak*
+*.backup*

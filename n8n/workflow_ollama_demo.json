@@ -1,0 +1,65 @@
+{
+  "name": "Akademia Formation Formation - Démonstration IA locale",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ia-locale-demo",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "1d3d8f10-4a30-4d17-9d8e-111111111111",
+      "name": "Webhook - Recevoir le prompt",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "ia-locale-demo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'qwen2.5:3b', stream: false, messages: [{ role: 'user', content: $json.body.prompt || 'Explique ce qu’est une IA locale en trois phrases.' }] } }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "2e4e8f10-4a30-4d17-9d8e-222222222222",
+      "name": "Ollama - Générer une réponse",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook - Recevoir le prompt": {
+      "main": [
+        [
+          {
+            "node": "Ollama - Générer une réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3e4e8f10-4a30-4d17-9d8e-333333333333",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "tags": []
+}
