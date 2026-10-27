@@ -1,334 +1,180 @@
-# Akademia Formation IA — TP LLM, Ollama, n8n et RAG
+# Akademia Formation IA — Guide des participants
 
-## 1. Présentation du laboratoire
+Bienvenue dans le laboratoire pédagogique Akademia Formation IA.
 
-Ce projet est un laboratoire pédagogique consacré aux modèles de langage
-(LLM), aux agents IA, à l'orchestration avec n8n et aux architectures RAG
-(Retrieval-Augmented Generation).
+Ce laboratoire permet de découvrir les modèles de langage (LLM), les
+agents IA, l'orchestration de workflows avec n8n et les architectures
+RAG (Retrieval-Augmented Generation).
 
-L'objectif est de comprendre chaque composant, de l'installation à la
-validation, en exécutant les commandes progressivement.
+## 1. Objectifs du TP
 
-## 2. Architecture
+À la fin des activités, vous devez être capables de :
 
-Les services prévus dans Docker Compose sont :
+- Identifier les composants d'une architecture IA.
+- Comprendre le rôle d'Ollama et d'un modèle de langage.
+- Découvrir la création visuelle d'un agent IA avec n8n.
+- Comprendre les rôles de MinIO et de Qdrant.
+- Explorer les fichiers de configuration du projet.
+- Observer le fonctionnement des services du laboratoire.
 
-- Ollama : exécution locale des modèles de langage.
-- Qwen : modèle conversationnel utilisé pour les tests.
-- nomic-embed-text : modèle d'embeddings pour la recherche documentaire.
-- n8n : création et orchestration des workflows.
-- PostgreSQL : base de données relationnelle.
-- Qdrant : base de données vectorielle.
-- MinIO : stockage des documents.
-- FastAPI : API backend.
-- React et Nginx : interface web.
+## 2. Environnement de travail
 
-## 3. Prérequis
+Le laboratoire est hébergé sur un serveur partagé administré par le formateur.
 
-Installer :
+Vous n'avez pas besoin d'installer Docker, Ollama, n8n ou Qdrant sur votre
+ordinateur pour suivre le parcours participant.
 
-- Git
-- Docker
-- Docker Compose v2 (commande `docker compose`)
-- Un terminal
-- Un navigateur web
+Les services sont préparés et démarrés par le formateur.
 
-Vérifier les installations :
+## 3. Connexion au serveur
 
-    git --version
-    docker --version
-    docker compose version
+Depuis un terminal compatible SSH, connectez-vous avec les identifiants
+communiqués individuellement par le formateur.
 
-Sous Linux, vérifier également :
+Exemple :
 
-    docker info
+    ssh participant1@81.17.98.238
 
-Si Docker renvoie une erreur de permission, vérifier les droits de l'utilisateur
-sur le socket Docker. Ne pas exécuter automatiquement tous les conteneurs en root.
+Chaque participant doit utiliser son propre compte.
 
-## 4. Récupérer le projet
+Une fois connecté, accédez au répertoire du projet :
 
-### Option A — Cloner le dépôt de référence
+    cd /opt/ia-lab
 
-    git clone --branch dev https://gitlab.com/santoudllo/akademia-formation-ia.git
-    cd akademia-formation-ia
+Vérifiez le répertoire courant :
 
-### Option B — Forker le projet
+    pwd
 
-1. Ouvrir https://gitlab.com/santoudllo/akademia-formation-ia
-2. Cliquer sur Fork si l'option est disponible.
-3. Cloner son propre fork en remplaçant IDENTIFIANT par son compte GitLab :
+## 4. Explorer la documentation et les fichiers
 
-    git clone --branch dev https://gitlab.com/IDENTIFIANT/akademia-formation-ia.git
-    cd akademia-formation-ia
+Afficher ce guide :
 
-Un dépôt privé nécessite les autorisations d'accès correspondantes.
+    cat README.md
 
-## 5. Préparer la configuration
+Consulter le fichier de configuration Docker Compose :
 
-Créer un fichier de configuration local à partir du modèle :
+    cat docker-compose.yml
 
-    cp .env.example .env
+Pour lire le fichier plus facilement :
 
-Éditer ensuite `.env` et remplacer toutes les valeurs CHANGE_ME par des
-valeurs locales adaptées.
+    less README.md
 
-Ne jamais publier `.env`, un jeton, un mot de passe ou une clé secrète.
+Dans less, appuyez sur q pour quitter.
 
-Le fichier `.env.example` est un modèle : il ne contient pas les identifiants
-du serveur de formation.
+Vous pouvez également explorer les répertoires auxquels votre compte
+est autorisé à accéder :
 
-Vérifier la configuration Docker Compose :
+    ls -l
+    ls -l data
 
-    docker compose config --quiet
+Certains fichiers ou répertoires peuvent être volontairement inaccessibles.
+Ne tentez pas de contourner les permissions.
 
-Si la commande affiche une erreur, corriger la configuration avant de continuer.
+## 5. Découvrir les composants
 
-## 6. TP 1 — Démarrer Ollama
+### Ollama et le modèle de langage
 
-Démarrer uniquement le service Ollama :
+Ollama exécute les modèles de langage utilisés par le laboratoire.
+Le modèle conversationnel préparé pour les exercices est Qwen 2.5 3B.
 
-    docker compose up -d ollama
+### n8n
 
-Vérifier son état :
+n8n permet de construire visuellement des workflows et des agents IA
+en reliant des nœuds, sans avoir à développer toute l'application.
 
-    docker compose ps ollama
+### MinIO
 
-Consulter les logs :
+MinIO fournit un stockage objet pour les fichiers et les documents.
 
-    docker compose logs --tail=50 ollama
+### Qdrant
 
-Vérifier que l'API Ollama répond depuis le conteneur :
+Qdrant est une base de données vectorielle utilisée notamment pour
+la recherche sémantique et les architectures RAG.
 
-    docker compose exec ollama ollama list
+### PostgreSQL
 
-Si le service est en cours de démarrage, attendre quelques secondes et réessayer.
+PostgreSQL assure le stockage de données relationnelles du projet.
 
-## 7. TP 1.1 — Télécharger Qwen
+### API et interface web
 
-Télécharger le modèle conversationnel :
+L'API permet aux composants applicatifs de communiquer.
+L'interface web fournit un point d'entrée pour utiliser l'application.
 
-    docker compose exec ollama ollama pull qwen2.5:3b
+## 6. Activités proposées
 
-Vérifier qu'il est disponible :
+### Activité 1 — Lire l'architecture
 
-    docker compose exec ollama ollama list
+1. Lire la section architecture de ce guide.
+2. Examiner docker-compose.yml.
+3. Identifier les services, leurs images, leurs ports et leurs volumes.
+4. Expliquer le rôle de chaque service.
 
-Le modèle `qwen2.5:3b` est un modèle de démonstration relativement compact.
-Il nécessite tout de même de la mémoire vive et de l'espace disque.
+### Activité 2 — Observer le laboratoire
 
-## 8. TP 1.2 — Tester Qwen
+1. Ouvrir les interfaces web communiquées par le formateur.
+2. Identifier les services accessibles.
+3. Observer les interfaces et relever les informations importantes.
+4. Signaler tout service inaccessible au formateur.
 
-Exécuter une première génération :
+### Activité 3 — Construire un agent IA avec n8n
 
-    docker compose exec ollama ollama run qwen2.5:3b
+1. Ouvrir l'interface n8n.
+2. Créer un workflow de test selon les consignes du formateur.
+3. Ajouter le déclencheur de conversation.
+4. Ajouter un nœud AI Agent.
+5. Connecter le modèle Ollama préparé pour le TP.
+6. Tester l'agent avec une question simple.
+7. Observer la réponse et le déroulement du workflow.
 
-Dans le terminal interactif, saisir :
+### Activité 4 — Comprendre le stockage et le RAG
 
-    Parle-moi de la France en cinq phrases.
+1. Découvrir l'interface MinIO.
+2. Identifier le rôle des documents dans le laboratoire.
+3. Découvrir l'interface Qdrant.
+4. Expliquer pourquoi une application RAG utilise des embeddings
+   et une base de données vectorielle.
 
-Lire la réponse, puis quitter le mode interactif avec `/bye` si cette commande
-est prise en charge par la version utilisée, ou fermer l'entrée interactive.
+## 7. Règles d'utilisation du serveur partagé
 
-On peut aussi tester directement l'API Ollama :
+- Ne modifiez pas les fichiers du projet.
+- Ne supprimez pas de conteneurs, de volumes ou de données.
+- Ne lancez pas de commandes Docker qui modifient l'environnement.
+- Ne consultez, ne copiez et ne partagez aucun fichier contenant des secrets.
+- N'essayez pas d'accéder aux comptes des autres participants.
+- Signalez les erreurs au formateur.
 
-    docker compose exec ollama ollama run qwen2.5:3b "Parle-moi de la France."
+Les comptes participants sont prévus pour la consultation et les activités
+pédagogiques. Les opérations d'administration sont réservées au formateur.
 
-Résultat attendu : une réponse textuelle produite par le modèle.
+## 8. Accès aux interfaces web
 
-## 9. TP 1.3 — Télécharger le modèle d'embeddings
+Les adresses et identifiants des interfaces sont communiqués par le formateur.
 
-Télécharger le modèle utilisé pour transformer les textes en vecteurs :
+Ne supposez pas qu'un service est accessible publiquement simplement parce
+qu'il fonctionne sur le serveur.
 
-    docker compose exec ollama ollama pull nomic-embed-text
+Si une interface ne répond pas, notez le message affiché et transmettez-le
+au formateur. Ne modifiez pas la configuration réseau.
 
-Vérifier la présence des deux modèles :
+## 9. Reproduire le laboratoire sur sa propre machine
 
-    docker compose exec ollama ollama list
+Si vous disposez de votre propre serveur ou machine et souhaitez installer
+et reproduire l'ensemble du laboratoire, consultez le guide séparé :
 
-Qwen sert à générer des réponses. `nomic-embed-text` sert à calculer des
-embeddings pour la recherche sémantique. Ce sont deux usages différents.
+    README_REPRODUCTION.md
 
-## 10. TP 2 — Démarrer n8n
+Ce second guide décrit le parcours d'installation et de configuration autonome.
 
-Démarrer n8n :
+## 10. Questions de synthèse
 
-    docker compose up -d n8n
+À la fin du TP, vous devez pouvoir expliquer :
 
-Vérifier l'état du conteneur :
+1. Quelle est la différence entre un LLM et un agent IA ?
+2. Quel est le rôle d'Ollama ?
+3. À quoi sert n8n ?
+4. Pourquoi utiliser MinIO pour stocker des documents ?
+5. Quel est le rôle de Qdrant dans une architecture RAG ?
+6. Pourquoi séparer l'API, l'interface web et les bases de données ?
+7. Pourquoi faut-il protéger les fichiers de configuration contenant des secrets ?
 
-    docker compose ps n8n
-
-Examiner les logs :
-
-    docker compose logs --tail=50 n8n
-
-Tester la réponse HTTP depuis le serveur qui héberge Docker :
-
-    curl -I http://127.0.0.1:5678/
-
-Un code HTTP 200, 301, 302 ou parfois 401/403 peut indiquer que le service
-répond. Interpréter le résultat avec les logs et la configuration d'authentification.
-
-### Accéder à n8n sur une machine distante
-
-Si Docker publie le port sur 127.0.0.1, il n'est pas directement accessible
-depuis un autre ordinateur.
-
-Depuis l'ordinateur de l'étudiant, ouvrir un tunnel SSH :
-
-    ssh -N -L 5678:127.0.0.1:5678 UTILISATEUR@ADRESSE_DU_SERVEUR
-
-Garder le terminal ouvert, puis visiter :
-
-    http://127.0.0.1:5678
-
-Remplacer UTILISATEUR et ADRESSE_DU_SERVEUR par les informations du serveur
-autorisé. Ne jamais publier les identifiants SSH dans le dépôt.
-
-## 11. TP 2.1 — Créer un agent IA dans n8n
-
-Créer un workflow comprenant :
-
-1. When chat message received
-2. AI Agent
-3. Ollama Chat Model
-4. Send a message, si l'on choisit le mode de réponse utilisant les nœuds de réponse
-
-Relier la sortie du déclencheur à l'entrée principale de l'AI Agent.
-
-Relier le port Ollama Chat Model au port Chat Model de l'AI Agent.
-
-Configurer le modèle Ollama avec l'adresse interne :
-
-    http://ollama:11434
-
-Sélectionner le modèle :
-
-    qwen2.5:3b
-
-Cette adresse suppose que n8n et Ollama sont sur le même réseau Docker Compose.
-
-Dans le déclencheur Chat, sélectionner le mode de réponse approprié.
-Si l'on utilise un nœud Send a message, sélectionner le mode
-Using Response Nodes.
-
-Dans Send a message, utiliser l'expression de sortie de l'AI Agent :
-
-    {{ $json.output }}
-
-Tester le workflow avec :
-
-    Parle-moi de la France et présente trois lieux touristiques célèbres.
-
-Résultat attendu : une réponse générée par Qwen et affichée dans le chat.
-
-Selon la version de n8n, vérifier les noms des champs et les options disponibles.
-Si le workflow ne répond pas, consulter l'historique d'exécution et les logs.
-
-## 12. TP 3 — Démarrer l'application Akademia
-
-Après les tests Ollama et n8n, démarrer les services applicatifs :
-
-    docker compose up -d --build
-
-Vérifier l'état des services :
-
-    docker compose ps
-
-Consulter les logs d'un service :
-
-    docker compose logs --tail=50 api
-    docker compose logs --tail=50 frontend
-    docker compose logs --tail=50 postgres
-    docker compose logs --tail=50 qdrant
-    docker compose logs --tail=50 minio
-
-Vérifier l'API locale depuis la machine qui héberge Docker :
-
-    curl -I http://127.0.0.1:8000/
-
-L'API peut répondre avec un code différent de 200 sur la racine si aucune
-route n'y est définie. Consulter la documentation Swagger lorsque disponible.
-
-## 13. Accès local aux interfaces
-
-Les ports peuvent être liés à 127.0.0.1 afin de limiter l'exposition réseau.
-Sur une installation locale, utiliser les adresses et ports définis dans
-docker-compose.yml.
-
-Pour une installation distante, préférer un tunnel SSH ou un reverse proxy
-sécurisé avec HTTPS et authentification. Ne pas exposer directement les
-interfaces d'administration ou les bases de données à Internet.
-
-## 14. Dépannage
-
-### Le service ne démarre pas
-
-    docker compose ps
-    docker compose logs --tail=100 NOM_DU_SERVICE
-
-### Le modèle Qwen est absent
-
-    docker compose exec ollama ollama list
-    docker compose exec ollama ollama pull qwen2.5:3b
-
-### n8n ne répond pas
-
-    docker compose ps n8n
-    docker compose logs --tail=50 n8n
-    curl -I http://127.0.0.1:5678/
-
-### L'application manque de mémoire
-
-- Arrêter les services non nécessaires au TP.
-- Ne pas démarrer simultanément tous les composants si la machine est limitée.
-- Utiliser une VM distante autorisée avec suffisamment de RAM et de disque.
-- Éviter de télécharger plusieurs grands modèles inutilement.
-
-### Tout arrêter
-
-    docker compose down
-
-Cette commande arrête et supprime les conteneurs du projet, mais conserve
-normalement les volumes nommés.
-
-Ne pas utiliser `docker compose down -v` sans comprendre que cette option
-supprime les volumes du projet et peut entraîner la perte de données.
-
-## 15. Machines peu puissantes et environnements cloud
-
-Parcours local :
-- Installer Docker Desktop sous Windows ou macOS, ou Docker Engine sous Linux.
-- Utiliser les modèles compacts du TP.
-- Démarrer uniquement les services nécessaires à l'exercice.
-
-Parcours distant :
-- Utiliser une VM Linux ou un environnement cloud autorisant Docker Compose.
-- Vérifier la RAM, le stockage, les limites CPU et les règles réseau.
-- Protéger les interfaces avec un tunnel SSH ou HTTPS.
-
-Un IDE web ne garantit pas la disponibilité d'un démon Docker, du réseau requis
-ou des ressources nécessaires au modèle. Vérifier les capacités de l'environnement
-avant de lancer les services.
-
-## 16. Travail à rendre
-
-Chaque étudiant doit fournir :
-
-1. La sortie de `docker compose ps ollama`.
-2. La liste des modèles obtenue avec `ollama list`.
-3. Une capture de la réponse de Qwen.
-4. Une capture du workflow n8n fonctionnel.
-5. Les éventuelles erreurs rencontrées et leur résolution.
-6. Une courte explication de la différence entre LLM, embeddings, agent IA et RAG.
-
-## 17. Sécurité
-
-- Ne jamais versionner `.env`.
-- Ne jamais publier de tokens ou mots de passe.
-- Ne pas partager les identifiants n8n du formateur.
-- Utiliser des identifiants propres à chaque étudiant.
-- Ne pas exposer publiquement les ports d'administration sans protection.
-- Exporter les workflows n8n et vérifier qu'ils ne contiennent aucun secret
-  avant de les publier dans le dépôt.
+Bon TP !
