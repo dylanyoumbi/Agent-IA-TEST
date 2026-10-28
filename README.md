@@ -2,9 +2,7 @@
 
 Bienvenue dans le laboratoire pédagogique Akademia Formation IA.
 
-Ce laboratoire permet de découvrir les modèles de langage (LLM), les
-agents IA, l'orchestration de workflows avec n8n et les architectures
-RAG (Retrieval-Augmented Generation).
+Ce laboratoire permet de découvrir les modèles de langage (LLM), les agents IA, l'orchestration de workflows avec n8n et les architectures RAG (Retrieval-Augmented Generation).
 
 ## 1. Objectifs du TP
 
@@ -21,66 +19,128 @@ RAG (Retrieval-Augmented Generation).
 
 Le laboratoire est hébergé sur un serveur partagé administré par le formateur.
 
-Vous n'avez pas besoin d'installer Docker, Ollama, n8n ou Qdrant sur votre
-ordinateur pour suivre le parcours participant.
+Vous n'avez pas besoin d'installer Docker, Ollama, n8n ou Qdrant sur votre ordinateur pour suivre le parcours participant.
 
 Les services sont préparés et démarrés par le formateur.
 
 ## 3. Connexion au serveur
 
-Depuis un terminal compatible SSH, connectez-vous avec les identifiants
-communiqués individuellement par le formateur.
+Chaque participant utilise exclusivement le compte SSH qui lui a été attribué par le formateur.
 
-Exemple :
+Exemple de connexion SSH classique :
 
-    ssh participant1@81.17.98.238
+```bash
+ssh participant1@81.17.98.238
+```
 
-Chaque participant doit utiliser son propre compte.
+Les comptes sont individuels. Ne partagez jamais vos identifiants.
 
-Une fois connecté, accédez au répertoire du projet :
+### Accéder à votre espace n8n
 
-    cd /opt/ia-lab
+Pour accéder à votre espace n8n depuis Windows, ouvrez PowerShell et exécutez uniquement la commande correspondant à votre binôme.
 
-Vérifiez le répertoire courant :
+**Binôme 1**
 
-    pwd
+```powershell
+ssh -N -L 15679:127.0.0.1:5679 participant1@81.17.98.238
+```
+
+Interface : http://localhost:15679
+
+**Binôme 2**
+
+```powershell
+ssh -N -L 15680:127.0.0.1:5680 participant2@81.17.98.238
+```
+
+Interface : http://localhost:15680
+
+**Binôme 3**
+
+```powershell
+ssh -N -L 15681:127.0.0.1:5681 participant3@81.17.98.238
+```
+
+Interface : http://localhost:15681
+
+**Binôme 4**
+
+```powershell
+ssh -N -L 15682:127.0.0.1:5682 participant4@81.17.98.238
+```
+
+Interface : http://localhost:15682
+
+**Binôme 5**
+
+```powershell
+ssh -N -L 15683:127.0.0.1:5683 participant5@81.17.98.238
+```
+
+Interface : http://localhost:15683
+
+Gardez la fenêtre PowerShell ouverte pendant toute la session. Pour fermer le tunnel à la fin du TP, utilisez `Ctrl+C`.
+
+Ne lancez pas la commande d'un autre binôme et n'utilisez pas le compte `root`.
+
+### Créer votre compte n8n
+
+Lors de la première ouverture de votre espace n8n, le formulaire de création du compte propriétaire apparaît.
+
+Chaque binôme doit renseigner :
+- une adresse e-mail ;
+- son prénom ;
+- son nom ;
+- un mot de passe robuste, comportant au moins 8 caractères, un chiffre et une majuscule.
+
+Conservez vos identifiants en lieu sûr. Ne partagez pas votre compte avec les autres binômes.
+
+Chaque espace possède son propre stockage et ses propres workflows n8n.
+
+**Important :** les commandes individuelles doivent être accompagnées de restrictions SSH configurées par l'administrateur afin que chaque compte ne puisse transférer que le port qui lui est attribué.
 
 ## 4. Explorer la documentation et les fichiers
 
-Afficher ce guide :
+Si votre compte est autorisé à accéder au répertoire du projet, vous pouvez consulter les fichiers en lecture seule.
 
-    cat README.md
+Afficher le guide :
 
-Consulter le fichier de configuration Docker Compose :
+```bash
+cat README.md
+```
 
-    cat docker-compose.yml
+Consulter le fichier Docker Compose si les permissions vous y autorisent :
 
-Pour lire le fichier plus facilement :
+```bash
+cat docker-compose.yml
+```
 
-    less README.md
+Lire le guide plus facilement :
 
-Dans less, appuyez sur q pour quitter.
+```bash
+less README.md
+```
 
-Vous pouvez également explorer les répertoires auxquels votre compte
-est autorisé à accéder :
+Dans `less`, appuyez sur `q` pour quitter.
 
-    ls -l
-    ls -l data
+Explorer les répertoires autorisés :
 
-Certains fichiers ou répertoires peuvent être volontairement inaccessibles.
-Ne tentez pas de contourner les permissions.
+```bash
+ls -l
+ls -l data
+```
+
+Certains fichiers ou répertoires peuvent être volontairement inaccessibles. Ne tentez pas de contourner les permissions.
 
 ## 5. Découvrir les composants
 
 ### Ollama et le modèle de langage
 
-Ollama exécute les modèles de langage utilisés par le laboratoire.
-Le modèle conversationnel préparé pour les exercices est Qwen 2.5 3B.
+Ollama exécute les modèles de langage utilisés par le laboratoire. Le modèle conversationnel préparé pour les exercices est Qwen 2.5 3B (`qwen2.5:3b`).
 
 ### n8n
 
-n8n permet de construire visuellement des workflows et des agents IA
-en reliant des nœuds, sans avoir à développer toute l'application.
+n8n permet de construire visuellement des workflows et des agents IA en reliant des nœuds, sans avoir à développer toute l'application.
 
 ### MinIO
 
@@ -88,8 +148,7 @@ MinIO fournit un stockage objet pour les fichiers et les documents.
 
 ### Qdrant
 
-Qdrant est une base de données vectorielle utilisée notamment pour
-la recherche sémantique et les architectures RAG.
+Qdrant est une base de données vectorielle utilisée notamment pour la recherche sémantique et les architectures RAG.
 
 ### PostgreSQL
 
@@ -97,28 +156,27 @@ PostgreSQL assure le stockage de données relationnelles du projet.
 
 ### API et interface web
 
-L'API permet aux composants applicatifs de communiquer.
-L'interface web fournit un point d'entrée pour utiliser l'application.
+L'API permet aux composants applicatifs de communiquer. L'interface web fournit un point d'entrée pour utiliser l'application.
 
 ## 6. Activités proposées
 
 ### Activité 1 — Lire l'architecture
 
 1. Lire la section architecture de ce guide.
-2. Examiner docker-compose.yml.
+2. Examiner `docker-compose.yml` si l'accès est autorisé.
 3. Identifier les services, leurs images, leurs ports et leurs volumes.
 4. Expliquer le rôle de chaque service.
 
 ### Activité 2 — Observer le laboratoire
 
-1. Ouvrir les interfaces web communiquées par le formateur.
+1. Ouvrir l'interface n8n attribuée à votre binôme.
 2. Identifier les services accessibles.
 3. Observer les interfaces et relever les informations importantes.
 4. Signaler tout service inaccessible au formateur.
 
 ### Activité 3 — Construire un agent IA avec n8n
 
-1. Ouvrir l'interface n8n.
+1. Ouvrir votre interface n8n.
 2. Créer un workflow de test selon les consignes du formateur.
 3. Ajouter le déclencheur de conversation.
 4. Ajouter un nœud AI Agent.
@@ -128,11 +186,10 @@ L'interface web fournit un point d'entrée pour utiliser l'application.
 
 ### Activité 4 — Comprendre le stockage et le RAG
 
-1. Découvrir l'interface MinIO.
+1. Découvrir l'interface MinIO si elle vous est accessible.
 2. Identifier le rôle des documents dans le laboratoire.
-3. Découvrir l'interface Qdrant.
-4. Expliquer pourquoi une application RAG utilise des embeddings
-   et une base de données vectorielle.
+3. Découvrir Qdrant selon les consignes du formateur.
+4. Expliquer pourquoi une application RAG utilise des embeddings et une base de données vectorielle.
 
 ## 7. Règles d'utilisation du serveur partagé
 
@@ -140,30 +197,32 @@ L'interface web fournit un point d'entrée pour utiliser l'application.
 - Ne supprimez pas de conteneurs, de volumes ou de données.
 - Ne lancez pas de commandes Docker qui modifient l'environnement.
 - Ne consultez, ne copiez et ne partagez aucun fichier contenant des secrets.
-- N'essayez pas d'accéder aux comptes des autres participants.
+- N'essayez pas d'accéder aux comptes ou aux espaces des autres participants.
+- Ne partagez pas les clés de chiffrement des instances.
 - Signalez les erreurs au formateur.
 
-Les comptes participants sont prévus pour la consultation et les activités
-pédagogiques. Les opérations d'administration sont réservées au formateur.
+Les comptes participants sont prévus pour les activités pédagogiques. Les opérations d'administration sont réservées au formateur.
 
-## 8. Accès aux interfaces web
+## 8. Accès aux interfaces web et dépannage
 
-Les adresses et identifiants des interfaces sont communiqués par le formateur.
+Les adresses des espaces n8n sont indiquées à la section 3.
 
-Ne supposez pas qu'un service est accessible publiquement simplement parce
-qu'il fonctionne sur le serveur.
+Si votre interface ne répond pas :
 
-Si une interface ne répond pas, notez le message affiché et transmettez-le
-au formateur. Ne modifiez pas la configuration réseau.
+1. Vérifiez que la fenêtre PowerShell est toujours ouverte.
+2. Vérifiez que vous utilisez l'adresse attribuée à votre binôme.
+3. Notez le message affiché et transmettez-le au formateur.
+4. Ne modifiez pas la configuration réseau et ne tentez pas d'accéder aux ports des autres binômes.
+
+Ne supposez pas qu'un service est accessible publiquement simplement parce qu'il fonctionne sur le serveur.
 
 ## 9. Reproduire le laboratoire sur sa propre machine
 
-Si vous disposez de votre propre serveur ou machine et souhaitez installer
-et reproduire l'ensemble du laboratoire, consultez le guide séparé :
+Si vous disposez de votre propre serveur ou machine et souhaitez installer et reproduire l'ensemble du laboratoire, consultez le guide séparé :
 
-    README_REPRODUCTION.md
+`README_REPRODUCTION.md`
 
-Ce second guide décrit le parcours d'installation et de configuration autonome.
+Ce second guide décrit le parcours d'installation et de configuration autonome. Il est distinct du présent guide participant.
 
 ## 10. Questions de synthèse
 
